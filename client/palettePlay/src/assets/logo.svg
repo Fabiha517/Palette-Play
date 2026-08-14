@@ -1,0 +1,262 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 600 180"
+  width="600"
+  height="180"
+  role="img"
+  aria-labelledby="logoTitle"
+>
+  <title id="logoTitle">Palette Play</title>
+
+  <defs>
+    <!-- Soft watercolor-like washes -->
+    <filter id="soft">
+      <feGaussianBlur stdDeviation="1.5"/>
+    </filter>
+
+    <linearGradient id="paletteWood" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#F2D2A9"/>
+      <stop offset="100%" stop-color="#C98C5A"/>
+    </linearGradient>
+
+    <linearGradient id="brushWood" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#D99A62"/>
+      <stop offset="100%" stop-color="#9A5D38"/>
+    </linearGradient>
+
+    <linearGradient id="playGradient" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#D96A57"/>
+      <stop offset="100%" stop-color="#7C6AE8"/>
+    </linearGradient>
+  </defs>
+
+  <!-- ========================= -->
+  <!-- WATERCOLOUR SPLASHES -->
+  <!-- ========================= -->
+
+  <g opacity="0.28" filter="url(#soft)">
+    <path
+      d="M35 53
+         C14 38 27 17 54 27
+         C75 8 104 24 95 47
+         C112 63 91 83 67 76
+         C48 88 25 76 35 53Z"
+      fill="#D96A57"
+    />
+
+    <path
+      d="M88 105
+         C72 84 94 69 114 80
+         C128 58 159 71 151 96
+         C171 111 150 132 128 125
+         C108 141 83 130 88 105Z"
+      fill="#8F7AE5"
+    />
+
+    <circle cx="35" cy="113" r="8" fill="#E9A66D"/>
+    <circle cx="155" cy="43" r="6" fill="#E8B8D3"/>
+    <circle cx="165" cy="132" r="5" fill="#7FC8D8"/>
+  </g>
+
+  <!-- ========================= -->
+  <!-- PALETTE -->
+  <!-- ========================= -->
+
+  <g transform="translate(20 25)">
+
+    <!-- palette shadow -->
+    <ellipse
+      cx="72"
+      cy="123"
+      rx="61"
+      ry="20"
+      fill="#8A6048"
+      opacity="0.16"
+    />
+
+    <!-- palette -->
+    <path
+      d="
+        M74 12
+        C37 13 12 39 14 70
+        C16 101 41 123 70 122
+        C88 121 96 111 91 101
+        C86 91 95 83 109 86
+        C125 89 139 79 137 62
+        C134 31 107 11 74 12Z
+      "
+      fill="url(#paletteWood)"
+      stroke="#8D5A3C"
+      stroke-width="3"
+    />
+
+    <!-- thumb hole -->
+    <ellipse
+      cx="111"
+      cy="72"
+      rx="10"
+      ry="14"
+      fill="#FBEBD7"
+      stroke="#9A6545"
+      stroke-width="3"
+    />
+
+    <!-- watercolor paint blobs -->
+
+    <path
+      d="M39 42
+         C32 32 43 26 52 31
+         C60 22 72 30 68 39
+         C77 46 66 55 56 51
+         C47 58 36 52 39 42Z"
+      fill="#D96A57"
+    />
+
+    <path
+      d="M75 32
+         C72 23 84 20 90 27
+         C101 23 106 34 99 40
+         C102 49 89 51 83 44
+         C74 47 69 39 75 32Z"
+      fill="#F2B84B"
+    />
+
+    <path
+      d="M33 70
+         C27 61 39 54 48 59
+         C57 52 67 61 63 70
+         C70 78 59 86 50 80
+         C40 87 29 80 33 70Z"
+      fill="#7C6AE8"
+    />
+
+    <path
+      d="M67 68
+         C63 59 75 54 82 61
+         C91 57 98 68 91 74
+         C96 83 82 87 76 80
+         C67 84 61 76 67 68Z"
+      fill="#70B7D8"
+    />
+
+    <path
+      d="M53 94
+         C48 85 60 79 68 85
+         C77 79 87 89 81 96
+         C87 105 74 110 67 103
+         C57 108 49 101 53 94Z"
+      fill="#E8A3B8"
+    />
+
+    <!-- tiny paint drops -->
+    <circle cx="28" cy="91" r="3" fill="#D96A57"/>
+    <circle cx="99" cy="48" r="3" fill="#7C6AE8"/>
+    <circle cx="44" cy="27" r="2.5" fill="#F2B84B"/>
+
+    <!-- ================= -->
+    <!-- BRUSH -->
+    <!-- ================= -->
+
+    <g transform="rotate(-32 84 70)">
+
+      <!-- brush handle -->
+      <rect
+        x="79"
+        y="18"
+        width="9"
+        height="82"
+        rx="4.5"
+        fill="url(#brushWood)"
+        stroke="#75452F"
+        stroke-width="2"
+      />
+
+      <!-- ferrule -->
+      <rect
+        x="76"
+        y="88"
+        width="15"
+        height="18"
+        rx="2"
+        fill="#C4B8A8"
+        stroke="#786D61"
+        stroke-width="2"
+      />
+
+      <!-- bristles -->
+      <path
+        d="
+          M76 105
+          C75 116 79 129 84 139
+          C89 129 93 116 91 105Z
+        "
+        fill="url(#playGradient)"
+        stroke="#75452F"
+        stroke-width="2"
+      />
+
+      <!-- colourful brush stroke -->
+      <path
+        d="M72 137
+           C78 142 91 141 100 137"
+        fill="none"
+        stroke="#D96A57"
+        stroke-width="4"
+        stroke-linecap="round"
+        opacity="0.7"
+      />
+
+    </g>
+  </g>
+
+ 
+
+  <g transform="translate(190 0)">
+
+
+
+    <circle cx="38" cy="31" r="4" fill="#8F7AE5" opacity="0.8"/>
+
+    <!-- Palette -->
+    <text
+      x="0"
+      y="115"
+      font-family="Georgia, 'Times New Roman', serif"
+      font-size="65"
+      font-weight="700"
+      letter-spacing="-4"
+      fill="#503125"
+    >
+      Palette
+    </text>
+
+    <!-- Play -->
+    <text
+      x="208"
+      y="115"
+      font-family="Georgia, 'Times New Roman', serif"
+      font-size="65"
+      font-weight="700"
+      letter-spacing="-4"
+      fill="url(#playGradient)"
+    >
+      Play
+    </text>
+
+   
+
+    little watercolor dots
+    <circle cx="15" cy="120" r="4" fill="#E8A3B8" opacity="0.8"/>
+    <circle cx="30" cy="126" r="3" fill="#7C6AE8" opacity="0.7"/>
+    <circle cx="43" cy="131" r="2.5" fill="#D96A57" opacity="0.8"/>
+
+  
+    <circle cx="245" cy="130" r="4" fill="#E8A3B8" opacity="0.8"/>
+    <circle cx="260" cy="126" r="3" fill="#7C6AE8" opacity="0.7"/>
+    <circle cx="273" cy="131" r="2.5" fill="#D96A57" opacity="0.8"/>
+
+  
+
+  </g>
+
+</svg>

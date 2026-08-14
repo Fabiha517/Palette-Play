@@ -1,0 +1,76 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 64 64"
+  width="64"
+  height="64"
+>
+  <!-- Circular background -->
+  <circle
+    cx="32"
+    cy="32"
+    r="30"
+    fill="#FBEBD7"
+  />
+
+  <!-- Main pencil -->
+  <path
+    d="M13 48L42 19L50 27L21 56L13 56Z"
+    fill="#7C6AE8"
+  />
+
+  <!-- Pencil highlight -->
+  <path
+    d="M17 48L42 23"
+    stroke="#B9AEFF"
+    stroke-width="3"
+    stroke-linecap="round"
+  />
+
+  <!-- Pencil wood -->
+  <path
+    d="M13 48L13 56L21 56Z"
+    fill="#F2C7A5"
+  />
+
+  <!-- Pencil lead -->
+  <path
+    d="M13 56L16 52L19 55Z"
+    fill="#3E2A22"
+  />
+
+  <!-- Eraser -->
+  <path
+    d="M42 19L47 14L55 22L50 27Z"
+    fill="#D96A8A"
+  />
+
+  <!-- Main sparkle -->
+  <path
+    d="
+      M48 7
+      L50.5 13.5
+      L57 16
+      L50.5 18.5
+      L48 25
+      L45.5 18.5
+      L39 16
+      L45.5 13.5Z
+    "
+    fill="#D96A57"
+  />
+
+  <!-- Small sparkle -->
+  <path
+    d="
+      M32 7
+      L33.5 11
+      L37.5 12.5
+      L33.5 14
+      L32 18
+      L30.5 14
+      L26.5 12.5
+      L30.5 11Z
+    "
+    fill="#C98BDE"
+  />
+</svg>
