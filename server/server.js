@@ -12,13 +12,7 @@ import User from "./models/User.js";
 dotenv.config()
 
 const app = express();
-app.use(
-	cors({
-		origin: process.env.FRONTEND_URL,
-		methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-		allowedHeaders: ["Content-Type", "Authorization"],
-	})
-);
+app.use(cors());
 app.use(express.json());
 app.use("/users",UserRoutes)
 app.use("/projects",projectRoutes)
