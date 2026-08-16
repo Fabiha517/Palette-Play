@@ -28,6 +28,7 @@ export const Loading = () => {
 	const imageUrl = location.state?.imageUrl;
 	const regenerate = location.state?.regenerate ?? false;
 	const title = location.state?.title;
+	const projectId = location.state?.projectId;
 	useEffect(() => {
 		if (!prompt || !imageUrl) return;
 
@@ -48,9 +49,9 @@ export const Loading = () => {
 				console.log("Generated images:", generatedImages);
 
 				if (regenerate) {
-					if (!currentProject) {
-						throw new Error("No project found for regeneration.");
-					}
+					    if (!projectId) {
+        throw new Error("No project found for regeneration.");
+    }	
 
 					for (const generated of generatedImages) {
 						if (cancelled) return;
@@ -61,7 +62,7 @@ export const Loading = () => {
 						};
 
 						const response = await addProjectVersion(
-							currentProject._id,
+							projectId,
 							version,
 						);
 
@@ -139,7 +140,7 @@ export const Loading = () => {
 		prompt,
 		imageUrl,
 		regenerate,
-		currentProject,
+		projectId,
 		navigate,
 		setCreatedProject,
 		addNewVersion,

@@ -8,6 +8,7 @@ import splash from "../assets/images/splash.png";
 import { useState, useEffect } from "react";
 import PollinationsConnectModal from "../components/PollinationsConnectModal";
 import { getPollinationsStatus } from "../../services/api";
+import useProjectStore from "../store/useProjectStore"
 const Home = () => {
 	const [image, setImage] = useState(null);
 	const [prompt, setPrompt] = useState("");
@@ -47,7 +48,7 @@ const Home = () => {
 
 	checkPollinations();
 }, []);
-
+const currentProject=useProjectStore((state)=>state.currentProject)
 		
 	return (
 		<main className="relative min-h-screen overflow-hidden bg-[#fbebd7] ">
@@ -66,6 +67,7 @@ const Home = () => {
 				setTitle={setTitle}
 				titleError={titleError}
 				setTitleError={setTitleError}
+				currentProject={currentProject}
 			/>
 
 			<FeaturesSection />

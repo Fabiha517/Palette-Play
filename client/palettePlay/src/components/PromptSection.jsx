@@ -14,6 +14,7 @@ import { connectPollinations } from "../../services/api";
 		image,
 		titleError,
 		setTitleError,
+		currentProject
 	}) => {
 		const ref = useRef(null);
 		const navigate = useNavigate();
@@ -69,7 +70,7 @@ import { connectPollinations } from "../../services/api";
 						prompt,
 						imageUrl,
 						regenerate: false,
-					
+					  projectId: currentProject?._id,
 					},
 				});
 			} catch (err) {
