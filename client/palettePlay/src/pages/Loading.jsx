@@ -169,23 +169,29 @@ export const Loading = () => {
 			error.code === "POLLINATIONS_AUTH_REQUIRED" ||
 			error.code === "POLLINATIONS_EXPIRED";
 		const isExpired = error.code === "POLLINATIONS_EXPIRED";
+		const isGenerationUnavailable =
+		error.code === "GENERATION_UNAVAILABLE";
 		return (
 			<main className="relative z-10 min-h-screen bg-[#fbebd7] flex items-center justify-center overflow-hidden">
 				<div className="relative z-10 text-center px-6 max-w-lg">
 					<h1 className="text-4xl font-serif text-[#503125]">Oops!</h1>
 					<h2 className="mt-5 text-2xl font-semibold text-[#503125]">
 						{isExpired
-							? "Your Pollinations connection expired"
-							: error.code === "POLLINATIONS_AUTH_REQUIRED"
-								? "Connect your Pollinations account"
-								: "Something went wrong"}
+		? "Your Pollinations connection expired"
+		: error.code === "POLLINATIONS_AUTH_REQUIRED"
+			? "Connect your Pollinations account"
+			: isGenerationUnavailable
+				? "Image generation is temporarily unavailable"
+				: "Something went wrong"}
 					</h2>
 					<p className="mt-4 text-lg leading-8 text-[#6D5C52]">
-						{isExpired
-							? "Your Pollinations authorization has expired. Reconnect your account to continue generating images with your own Pollen."
-							: isPollinationsAuthError
-								? "Connect your Pollinations account to generate images using your own Pollen."
-								: error.message}
+					{isExpired
+		? "Your Pollinations authorization has expired. Reconnect your account to continue generating images with your own Pollen."
+		: error.code === "POLLINATIONS_AUTH_REQUIRED"
+			? "Connect your Pollinations account to generate images using your own Pollen."
+			: isGenerationUnavailable
+				? "The image generation service is temporarily unavailable. Please try again in a moment."
+				: error.message}
 					</p>
 					{isPollinationsAuthError && (
 						<button
