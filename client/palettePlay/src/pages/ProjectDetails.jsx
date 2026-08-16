@@ -113,7 +113,7 @@
 				};
 
 				return (
-					<main className="relative lg:h-screen overflow-hidden bg-[#FBEBD7] px-8 py-1 z-10">
+					<main className="relative min-h-screen	 lg:h-screen overflow-hidden bg-[#FBEBD7] px-8 py-1 z-10">
 						<button
 							type="button"
 							onClick={() => navigate("/projects")}
@@ -129,7 +129,7 @@
 							Delete Project
 						</button>
 
-						<div className="grid lg:grid-cols-[35%_65%] h-full overflow-y-auto">
+						<div className="grid lg:grid-cols-[35%_65%] h-full overflow-y-auto mt-10	 md:mt-3">
 							<div className="pr-6 border-r border-[#E8D8C7] flex flex-col ">
 								<img
 									src={currentProject.originalImage}
@@ -223,12 +223,12 @@
 
 
 								{/* PROMPT HISTORY */}
-								<div className="flex-1 flex flex-col overflow-auto custom-scrollbar	 mt-2 mb-10">
+								<div className="flex-1 flex flex-col overflow-auto custom-scrollbar	 mt-2 mb-10 max-h-fit	 ">
 									<h2 className="font-serif font-semibold text-2xl text-[#503125] mb-1">
 										Prompt History
 									</h2>
 
-									<div className="flex-1 bg-[#F8F4EF] border border-[#E8D8C7] rounded-3xl  custom-scrollbar">
+									<div className="flex-1 bg-[#F8F4EF] border border-[#E8D8C7] rounded-3xl  custom-scrollbar ">
 										{versions.map((version, index) => {
 											const versionId = version._id || version.id;
 
@@ -263,7 +263,7 @@
 
 													<p
 														className={`
-															mt-3
+															mt-3 
 															leading-7
 															text-[#5D534C]
 															${expandedHistory[versionId] ? "" : "line-clamp-1"}

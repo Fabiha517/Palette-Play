@@ -22,13 +22,23 @@ const userSchema = new mongoose.Schema(
 			type: String,
 			default: "",
 		},
+		pollinations: {
+			accessToken: {
+				type: String,
+				default: null,
+			},
+			expiresAt: {
+				type: Date,
+				default: null,
+			},
+		},
 		resetPasswordToken: {
 			type: String,
-			default:null,
+			default: null,
 		},
-		resetPasswordExpires:{
-			type:Date,
-			default:null,
+		resetPasswordExpires: {
+			type: Date,
+			default: null,
 		},
 	},
 	{

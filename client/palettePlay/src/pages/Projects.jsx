@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import useProjectStore from "../store/useProjectStore";
 import SplashEffect from "../components/SplashEffect";
-import paperclip from "../assets/paperclip.svg";
+import paperclip from "../assets/svgs/paperclip.svg";
 import { FiTrash2 } from "react-icons/fi";
 import ConfirmModal from "../components/ConfirmModal";
 import { useState } from "react";

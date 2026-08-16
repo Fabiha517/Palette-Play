@@ -92,7 +92,7 @@ setForgotError("Please enter your email.")
 
 			login(data.user);
 
-			navigate("/");
+			navigate("/home");
 		} catch (error) {
 			console.error("Login error:", error);
 
@@ -104,7 +104,7 @@ setForgotError("Please enter your email.")
 
 	return (
 		<main className="min-h-screen flex items-center justify-center bg-[#FBEBD7] px-5 py-10 relative z-10 overflow-hidden">
-			<div className="w-full max-w-md bg-[#FDF5EB] border border-[#E8D8C7] rounded-3xl p-8 shadow-sm">
+			<div className="w-full max-w-md bg-[#FDF5EB] border border-[#E8D8C7] rounded-3xl p-8 shadow-sm ">
 				<h1 className="text-4xl font-serif font-semibold text-center text-[#503125]">
 					Welcome Back
 				</h1>
@@ -182,6 +182,7 @@ setForgotError("Please enter your email.")
 				</form>
 
 <div class=" mt-6 flex gap-3 items-center justify-center">
+	
 				<p className="text-center  text-[#6D5C52]">
 					Don't have an account?{" "}
 					<Link
@@ -190,6 +191,9 @@ setForgotError("Please enter your email.")
 						Sign Up
 					</Link>
 				</p>
+	
+</div>
+<div class="flex justify-center items-center w-full mt-2">
 				<button
 	type="button"
 	onClick={() => {
@@ -197,11 +201,12 @@ setForgotError("Please enter your email.")
 		setResetSent(false);
 		setForgotError("");
 	}}
-	className="text-sm  font-semibold text-[#7C6AE8] hover:underline cursor-pointer"
+	className="text-sm  font-semibold text-[#7C6AE8] hover:underline cursor-pointer align-middle "
 >
 	Forgot password?
 </button>
 </div>
+
 			</div>
 
 			{showForgotPassword && (

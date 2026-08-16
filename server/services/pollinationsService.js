@@ -1,10 +1,10 @@
-import fs from "fs/promises";
-import path from "path";
+
 export const generateImageFromPollinations = async (
 	prompt,
 	referenceImageUrl,
 	seed,
 	variation,
+	accessToken	
 ) => {
 	
 	
@@ -58,13 +58,25 @@ unless specifically requested by the user.
 
 	const response = await fetch(url, {
 		headers: {
-			Authorization: `Bearer ${process.env.POLLINATIONS_API_KEY}`,
+			Authorization: `Bearer ${accessToken}`,
 		},
 	});
 
 	if (!response.ok) {
-		const errorText = await response.text();
-		throw new Error(`Pollinations error ${response.status}: ${errorText}`);
+	const errorText = await response.text();
+
+	if (response.status === 401) {
+		const error = new Error(
+			"Your Pollinations connection is no longer valid."
+		);
+
+		error.code = "POLLINATIONS_EXPIRED";
+		throw error;
+	}
+
+	throw new Error(
+		`Pollinations error ${response.status}: ${errorText}`
+	);
 	}
 
 	return Buffer.from(await response.arrayBuffer());

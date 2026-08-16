@@ -1,4 +1,5 @@
 import App from "./App";
+import Dashboard from "./pages/Dashboard";
 import Home from "./pages/Home";
 import Projects from "./pages/Projects";
 import Profile from "./pages/Profile";
@@ -28,11 +29,16 @@ export const router = createBrowserRouter([
 		path: "/",
 		element: <ProtectedRoute />,
 		children: [
+				{
+						index: true,
+						element: <Dashboard />,
+					},
 			{
 				element: <App />,
 				children: [
+				
 					{
-						index: true,
+						path:"/home",	
 						element: <Home />,
 					},
 					{

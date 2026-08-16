@@ -4,6 +4,7 @@ import SplashEffect from "../components/SplashEffect";
 import { updateProfile, updateProfilePhoto } from "../../services/api";
 import { useNavigate } from "react-router-dom";
 import PasswordModal from "../components/PasswordModal";
+import { FiEdit } from "react-icons/fi";
 const Profile = () => {
 	const user = useProjectStore((state) => state.user);
 	const updateUser = useProjectStore((state) => state.updateUser);
@@ -106,8 +107,8 @@ const Profile = () => {
 				{/* LEFT PANEL */}
 
 				<div className="border-r border-[#E8D8C7] lg:pr-8">
-					<div className="flex flex-col items-center  justify-center">
-						<div className="w-40 h-40 rounded-full overflow-hidden border-4 border-[#E8D8C7] bg-[#FFF8F1] shadow self-center">
+					<div className=" relative flex flex-col items-center  justify-center">
+						<div className="   	w-40 h-40 rounded-full overflow-hidden border-4 border-[#E8D8C7] bg-[#FFF8F1] shadow self-center">
 							{(profilePhoto || user.profileImage) && (
 								<img
 									src={
@@ -120,7 +121,12 @@ const Profile = () => {
 								/>
 							)}
 						</div>
-
+<button
+								onClick={() => fileInputRef.current?.click()}
+								className=" flex gap-1 items-center justify-center  px-3 py-1 rounded-xl border border-[#b97cdf] bg-[#e1c9db] hover:bg-[#f5b0e9] transition cursor-pointer">
+									<FiEdit/>
+							Edit
+							</button>
 						<h2 className="mt-5 text-3xl font-serif text-[#503125] text-center ">
 							{user.username || "Unnamed Artist"}
 						</h2>
@@ -235,12 +241,8 @@ const Profile = () => {
 						</div>
 
 						<div className="mt-8 flex items-center gap-4">
-							<button
-								onClick={() => fileInputRef.current?.click()}
-								className="px-6 py-3 rounded-2xl border border-[#b97cdf] bg-[#e1c9db] hover:bg-[#f5b0e9] transition cursor-pointer">
-								Change Profile Photo
-							</button>
-
+							
+	
 							<input
 								ref={fileInputRef}
 								type="file"
@@ -254,21 +256,22 @@ const Profile = () => {
 							<p className="mt-4 text-sm text-[#C86B47]">{saveError}</p>
 						)}
 
-						<div className="mt-10 flex justify-between items-center">
-							<button
-								onClick={handleSaveChanges}
-								disabled={isSaving}
-								className="px-10 py-4 rounded-2xl bg-linear-to-r from-[#D96A57] to-[#7C6AE8] text-white font-medium hover:scale-[1.02] transition cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed">
-								{isSaving ? "Saving..." : "Save Changes"}
-							</button>
-							<button
+						<div className="mt-10 flex flex-wrap justify-between items-center">
+						<button
 								onClick={() => setShowPasswordModal(true)}
-								className="px-8 py-3 rounded-2xl bg-linear-to-r from-[#e27497] to-[#d36551] text-white font-medium hover:scale-[1.02] transition cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed">
+								className="px-5 md:px-8 py-3 md:py-4 mb-2 rounded-2xl bg-linear-to-r from-[#e27497] to-[#d36551] text-white font-medium hover:scale-[1.02] transition cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed">
 								Change Password
 							</button>
 							<button
+								onClick={handleSaveChanges}
+								disabled={isSaving}
+								className="px-8 py-3  md:py-4 rounded-2xl bg-linear-to-r from-[#D96A57] to-[#7C6AE8] text-white font-medium hover:scale-[1.02] transition cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed">
+								{isSaving ? "Saving..." : "Save Changes"}
+							</button>
+							
+							<button
 								onClick={handleLogout}
-								className="px-8 py-3 rounded-2xl bg-linear-to-r from-[#d76652] to-[#e8a36a] text-white font-medium hover:scale-[1.02] transition cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed">
+								className="px-5 md:px-8 py-3 md:py-4 rounded-2xl bg-linear-to-r from-[#d76652] to-[#e8a36a] text-white font-medium hover:scale-[1.02] transition cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed">
 								Logout
 							</button>
 						</div>

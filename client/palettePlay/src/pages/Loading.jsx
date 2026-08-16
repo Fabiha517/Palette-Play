@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-
 import purpleSplash from "../assets/images/purpleSplash.png";
 import blueSplash from "../assets/images/blueSplash.png";
 import splash from "../assets/images/splash.png";
 import leftLeaf from "../assets/images/leftLeaf.png";
 import rightLeaf from "../assets/images/rightLeaf.png";
-
 import useProjectStore from "../store/useProjectStore";
+import SplashEffect from "../components/SplashEffect"
+import { connectPollinations } from "../../services/api";
 import {
 	createProject,
 	generateImages,
@@ -19,13 +19,11 @@ export const Loading = () => {
 	const location = useLocation();
 
 	const setCreatedProject = useProjectStore((state) => state.setCreatedProject);
-
 	const addNewVersion = useProjectStore((state) => state.addNewVersion);
-
 	const currentProject = useProjectStore((state) => state.currentProject);
 
-	const [error, setError] = useState("");
-
+	const [error, setError] = useState(null);
+	
 	const prompt = location.state?.prompt;
 	const imageUrl = location.state?.imageUrl;
 	const regenerate = location.state?.regenerate ?? false;
@@ -37,8 +35,6 @@ export const Loading = () => {
 
 		const generate = async () => {
 			try {
-				
-
 				const generationResponse = await generateImages(prompt, imageUrl);
 
 				if (cancelled) return;
@@ -51,7 +47,6 @@ export const Loading = () => {
 
 				console.log("Generated images:", generatedImages);
 
-			
 				if (regenerate) {
 					if (!currentProject) {
 						throw new Error("No project found for regeneration.");
@@ -65,7 +60,6 @@ export const Loading = () => {
 							image: generated.imageUrl,
 						};
 
-						
 						const response = await addProjectVersion(
 							currentProject._id,
 							version,
@@ -75,7 +69,6 @@ export const Loading = () => {
 
 						console.log("Version added:", response.version);
 
-					
 						addNewVersion(response.version);
 					}
 
@@ -90,8 +83,6 @@ export const Loading = () => {
 
 					return;
 				}
-
-			
 
 				const versions = generatedImages.map((generated) => ({
 					prompt,
@@ -110,7 +101,7 @@ export const Loading = () => {
 					versions,
 				};
 
-			//Save project in database
+				//Save project in database
 				const data = await createProject(project);
 
 				if (cancelled) return;
@@ -120,7 +111,6 @@ export const Loading = () => {
 				// Save project in Zustand
 				setCreatedProject(data.project);
 
-	
 				navigate("/results", {
 					state: {
 						regenerate: false,
@@ -132,7 +122,11 @@ export const Loading = () => {
 
 				console.error("Generation failed:", err);
 
-				setError("Something went wrong while creating your artwork.");
+				setError({
+					code: err.code,
+					message:
+						err.message || "Something went wrong while creating your artwork.",
+				});
 			}
 		};
 
@@ -141,7 +135,16 @@ export const Loading = () => {
 		return () => {
 			cancelled = true;
 		};
-	}, [prompt,imageUrl,regenerate,currentProject,navigate,setCreatedProject,addNewVersion,title,]);
+	}, [
+		prompt,
+		imageUrl,
+		regenerate,
+		currentProject,
+		navigate,
+		setCreatedProject,
+		addNewVersion,
+		title,
+	]);
 
 	if (!prompt || !imageUrl) {
 		return (
@@ -152,7 +155,7 @@ export const Loading = () => {
 					</h1>
 
 					<button
-						onClick={() => navigate("/")}
+						onClick={() => navigate("/home")}
 						className="mt-5 px-6 py-3 rounded-2xl bg-[#7C6AE8] text-white cursor-pointer">
 						Go Home
 					</button>
@@ -162,41 +165,72 @@ export const Loading = () => {
 	}
 
 	if (error) {
+		const isPollinationsAuthError =
+			error.code === "POLLINATIONS_AUTH_REQUIRED" ||
+			error.code === "POLLINATIONS_EXPIRED";
+		const isExpired = error.code === "POLLINATIONS_EXPIRED";
 		return (
-			<main className="min-h-screen bg-[#fbebd7] flex items-center justify-center">
-				<div className="text-center px-6">
-					<h1 className="text-3xl font-serif text-[#503125]">Oops!</h1>
-
-					<p className="mt-3 text-[#6D5C52]">{error}</p>
+			<main className="relative z-10 min-h-screen bg-[#fbebd7] flex items-center justify-center overflow-hidden">
+				<div className="relative z-10 text-center px-6 max-w-lg">
+					<h1 className="text-4xl font-serif text-[#503125]">Oops!</h1>
+					<h2 className="mt-5 text-2xl font-semibold text-[#503125]">
+						{isExpired
+							? "Your Pollinations connection expired"
+							: error.code === "POLLINATIONS_AUTH_REQUIRED"
+								? "Connect your Pollinations account"
+								: "Something went wrong"}
+					</h2>
+					<p className="mt-4 text-lg leading-8 text-[#6D5C52]">
+						{isExpired
+							? "Your Pollinations authorization has expired. Reconnect your account to continue generating images with your own Pollen."
+							: isPollinationsAuthError
+								? "Connect your Pollinations account to generate images using your own Pollen."
+								: error.message}
+					</p>
+					{isPollinationsAuthError && (
+						<button
+							onClick={async () => {
+								try {
+													const data = await connectPollinations();
+													window.location.href = data.authorizationUrl;
+												} catch (error) {
+													console.error("Pollinations connection failed:", error);
+												}
+							}}
+							className="mt-7 px-8 py-4 rounded-2xl text-white font-semibold bg-linear-to-r from-[#D96A57] to-[#7C6AE8] hover:scale-[1.02] transition">
+							Connect Pollinations
+						</button>
+					)}
 
 					<button
-						onClick={() => navigate("/")}
-						className="  mt-6  px-7  py-3  rounded-2xl  bg-linear-to-r  from-[#D96A57]  to-[#7C6AE8]  text-white  cursor-pointer">
-						Try Again
+						onClick={() => navigate("/home")}
+						className="block mx-auto mt-4 px-7 py-3 rounded-2xl border border-[#E8D8C7] text-[#503125]">
+						Back Home
 					</button>
 				</div>
+				<SplashEffect/>
 			</main>
 		);
 	}
-
 	return (
 		<main className="relative h-screen bg-[#fbebd7] z-10 overflow-hidden">
-	<div className="max-w-6xl mx-auto h-full px-6 py-6 flex flex-col">
+	
+			<div className="max-w-6xl mx-auto h-full px-6 py-6 flex flex-col">
+				{/* Header */}
+				<div className="shrink-0">
+					<h1 className="text-5xl font-serif text-center text-[#3E2A22]">
+						Creating your masterpiece...
+					</h1>
 
-		{/* Header */}
-		<div className="shrink-0">
-			<h1 className="text-5xl font-serif text-center text-[#3E2A22]">
-				Creating your masterpiece...
-			</h1>
+					<p className="text-center mt-3 text-[#6D5C52]">
+						This may take a few moments. Our AI is carefully adding colors while
+						keeping every detail.
+					</p>
+				</div>
 
-			<p className="text-center mt-3 text-[#6D5C52]">
-				This may take a few moments. Our AI is carefully
-				adding colors while keeping every detail.
-			</p>
-		</div>
-
-		{/* Main images */}
-		<div className="
+				{/* Main images */}
+				<div
+					className="
 			mt-8
 			flex-1
 			min-h-[60vh]
@@ -204,38 +238,39 @@ export const Loading = () => {
 			md:grid-cols-2
 			gap-8
 		">
+					{/* Original */}
+					<div className="min-h-0 flex flex-col items-center">
+						<h2 className="mb-3 text-xl font-semibold text-[#503125] shrink-0">
+							Original
+						</h2>
 
-			{/* Original */}
-			<div className="min-h-0 flex flex-col items-center">
-				<h2 className="mb-3 text-xl font-semibold text-[#503125] shrink-0">
-					Original
-				</h2>
-
-				<div className="
+						<div
+							className="
 					flex-1
 					min-h-0
 					rounded-3xl
 					overflow-hidden
 				">
-					<img
-						src={imageUrl}
-						className="
+							<img
+								src={imageUrl}
+								className="
 							w-full
 							h-full	
 							object-contain
 							rounded-3xl
 						"
-					/>
-				</div>
-			</div>
+							/>
+						</div>
+					</div>
 
-			{/* Generating */}
-			<div className="min-h-0 flex flex-col items-center">
-				<h2 className="mb-3 text-xl font-semibold text-[#503125] shrink-0">
-					Generating...
-				</h2>
+					{/* Generating */}
+					<div className="min-h-0 flex flex-col items-center">
+						<h2 className="mb-3 text-xl font-semibold text-[#503125] shrink-0">
+							Generating...
+						</h2>
 
-				<div className="
+						<div
+							className="
 					flex-1
 					min-h-0
 					rounded-3xl
@@ -246,45 +281,42 @@ export const Loading = () => {
 					items-center
 					justify-center
 				">
-					<img
-						src={imageUrl}
-						className="
+							<img
+								src={imageUrl}
+								className="
 							w-full
 							h-full
 							object-contain
 							rounded-3xl
 							opacity-60
 						"
-					/>
+							/>
+						</div>
+					</div>
 				</div>
-			</div>
-		</div>
 
-		{/* Thumbnails */}
-		<div className="
+				{/* Thumbnails */}
+				<div
+					className="
 			shrink-0
 			mt-5
 			flex
 			justify-center
 			gap-4
 		">
-			<img
-				src={imageUrl}
-				className="w-16 h-16 rounded-xl object-cover"
-			/>
+					<img src={imageUrl} className="w-16 h-16 rounded-xl object-cover" />
 
-			{[1, 2, 3, 4].map((i) => (
-				<img
-				key={i}
-					src={imageUrl}
-					className="w-16 h-16 rounded-xl object-cover animate-pulse border border-[#E8D8C7]"
-				/>
+					{[1, 2, 3, 4].map((i) => (
+						<img
+							key={i}
+							src={imageUrl}
+							className="w-16 h-16 rounded-xl object-cover animate-pulse border border-[#E8D8C7]"
+						/>
+					))}
+				</div>
+			</div>
 
-			))}
-		</div>
-	</div>
-
-<div className="absolute -right-50 -top-20 -z-10 pointer-events-none">
+			<div className="absolute -right-50 -top-20 -z-10 pointer-events-none">
 				<img src={splash} className="w-[50vw]" alt="" />
 			</div>
 
@@ -311,9 +343,6 @@ export const Loading = () => {
 			<div className="absolute left-10 -bottom-50 -z-10 pointer-events-none">
 				<img src={leftLeaf} alt="" />
 			</div>
-</main>
+		</main>
 	);
 };
-			
-
-	

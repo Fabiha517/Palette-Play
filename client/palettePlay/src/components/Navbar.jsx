@@ -1,4 +1,4 @@
-import logo from "../assets/logo.svg";
+import logo from "../assets/svgs/logo.svg";
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
@@ -15,7 +15,7 @@ const Navbar = () => {
 					className=" hidden md:flex links text-[#5f2304]  gap-10 border-none mr-15  border-4
 				 border-b-[#be8c73dd]">
 					<NavLink
-						to="/"
+						to="/home"
 						end
 						className={({ isActive }) =>
 							`pb-1 focus-visible:outline-none ${isActive ? "border-b-2 border-[#5f2304] " : " hover:text-[#a8562c]"}`
@@ -63,7 +63,7 @@ ${menuOpen ? "translate-x-0" : "translate-x-full"}`}>
 					</div>
 					<div className="flex flex-col mt-6">
 						<NavLink
-							to="/"
+							to="/home	"
 							end
 							className={({ isActive }) =>
 								`mx-4 my-1 rounded-xl px-6 py-4 transition
