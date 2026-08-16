@@ -6,8 +6,9 @@ const ProtectedRoute = () => {
 
 	if (authLoading) {
 		return (
-		<div className="min-h-screen bg-[#FBEBD7] flex items-center justify-center">
+			<div className="min-h-screen min-w-screen  bg-[#FBEBD7] flex items-center justify-center">
 				<p className="text-[#503125]">Loading...</p>
+				<Outlet />
 			</div>
 		);
 	}
