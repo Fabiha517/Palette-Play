@@ -6,9 +6,17 @@ const ProtectedRoute = () => {
 
 	if (authLoading) {
 		return (
-			<div className="min-h-screen bg-[#FBEBD7] flex items-center justify-center">
-				<p className="text-[#503125]">Loading...</p>
-			</div>
+			<>
+				{/* Mount the protected tree so initializeAuth can run */}
+				<div className="hidden">
+					<Outlet />
+				</div>
+
+				{/* What the user actually sees */}
+				<div className="fixed inset-0 bg-[#FBEBD7] flex items-center justify-center z-50">
+					<p className="text-[#503125]">Loading...</p>
+				</div>
+			</>
 		);
 	}
 	if (!user) {
