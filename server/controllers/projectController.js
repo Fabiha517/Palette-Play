@@ -91,48 +91,50 @@ export const getProjectById = async (req, res) => {
 };
 
 
+
 export const addVersion = async (req, res) => {
-	try {
-		const { projectId } = req.params;
-		const { image, prompt } = req.body;
+    try {
+        const { projectId } = req.params;
+        const { image, prompt } = req.body;
 
-		if (!image || !prompt) {
-			return res.status(400).json({
-				message: "Image and prompt are required",
-			});
-		}
+        if (!image || !prompt) {
+            return res.status(400).json({
+                message: "Image and prompt are required",
+            });
+        }
 
-		const project = await Project.findOne({
-	_id: projectId,
-	userId: req.userId,
-});
+        const project = await Project.findOne({
+            _id: projectId,
+            userId: req.userId,
+        });
 
-		if (!project) {
-			return res.status(404).json({
-				message: "Project not found",
-			});
-		}
+        if (!project) {
+            return res.status(404).json({
+                message: "Project not found",
+            });
+        }
 
-		const newVersion = {
-			image,
-			prompt,
-			createdAt: new Date(),
-		};
+        const newVersion = {
+            image,
+            prompt,
+            createdAt: new Date(),
+        };
 
-		project.versions.push(newVersion);
+        project.versions.push(newVersion);
 
-		await project.save();
+        await project.save();
 
-		res.status(201).json({
-			message: "Version added successfully",
-			version: project.versions[project.versions.length - 1],
-			project,
-		});
-	} catch (error) {
-		console.error(error);
+        res.status(201).json({
+            message: "Version added successfully",
+            version: project.versions[project.versions.length - 1],
+            project,
+        });
 
-		res.status(500).json({
-			message: "Failed to add version",
-		});
-	}
+    } catch (error) {
+        console.error("ADD VERSION ERROR:", error);
+
+        res.status(500).json({
+            message: "Failed to add version",
+        });
+    }
 };

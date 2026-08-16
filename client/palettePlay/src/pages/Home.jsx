@@ -22,20 +22,19 @@ const Home = () => {
 	useEffect(() => {
 	const checkPollinations = async () => {
 		try {
-			console.log("Checking Pollinations status...");
-
+			
 			const status = await getPollinationsStatus();
 
-			console.log("Pollinations status:", status);
+		
 
 			const dismissed = localStorage.getItem(
 				"pollinationsPromptDismissed"
 			);
 
-			console.log("Dismissed:", dismissed);
+	
 
 			if (!status.connected && (status.expired || !dismissed)) {
-				console.log("SHOWING POLLINATIONS MODAL");
+			
 
 				setShowPollinationsModal(true);
 			} else {

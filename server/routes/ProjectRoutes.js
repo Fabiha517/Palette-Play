@@ -7,5 +7,6 @@ router.get("/",authMiddleware,getProjects)
 router.post("/",authMiddleware,createProject)
 router.delete("/:id", authMiddleware, deleteProject);
 router.get("/:id", authMiddleware, getProjectById);
-router.post("/:id/versions",authMiddleware,addVersion)
+router.post("/:projectId/versions",authMiddleware,addVersion)
+
 export default router;

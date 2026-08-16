@@ -171,9 +171,16 @@ export const addProjectVersion = async (projectId, version) => {
 	});
 	const data = await response.json();
 
-	if (!response.ok) {
-		throw new Error(data.message || "Failed to add version");
-	}
+  if (!response.ok) {
+        const error = new Error(
+            data.message || "Failed to add version"
+        );
+
+        error.code = data.code;
+        error.status = response.status;
+
+        throw error;
+    }
 
 	return data;
 };

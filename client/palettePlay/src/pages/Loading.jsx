@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState,useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import purpleSplash from "../assets/images/purpleSplash.png";
 import blueSplash from "../assets/images/blueSplash.png";
@@ -17,7 +17,7 @@ import {
 export const Loading = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
-
+const generationStarted = useRef(false);
 	const setCreatedProject = useProjectStore((state) => state.setCreatedProject);
 	const addNewVersion = useProjectStore((state) => state.addNewVersion);
 	const currentProject = useProjectStore((state) => state.currentProject);
@@ -31,7 +31,10 @@ export const Loading = () => {
 	const projectId = location.state?.projectId;
 	useEffect(() => {
 		if (!prompt || !imageUrl) return;
-
+ if (generationStarted.current) {
+        console.log(" Generation already started, skipping duplicate call");
+        return;
+    }
 		let cancelled = false;
 
 		const generate = async () => {
@@ -60,6 +63,7 @@ export const Loading = () => {
 							prompt,
 							image: generated.imageUrl,
 						};
+		
 
 						const response = await addProjectVersion(
 							projectId,
@@ -68,8 +72,7 @@ export const Loading = () => {
 
 						if (cancelled) return;
 
-						console.log("Version added:", response.version);
-
+					
 						addNewVersion(response.version);
 					}
 
