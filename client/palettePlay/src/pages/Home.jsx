@@ -19,24 +19,36 @@ const Home = () => {
 	const [showPollinationsModal, setShowPollinationsModal] = useState(false);
 
 	useEffect(() => {
-		const checkPollinations = async () => {
-			try {
-				const status = await getPollinationsStatus();
+	const checkPollinations = async () => {
+		try {
+			console.log("Checking Pollinations status...");
 
-				setPollinationsStatus(status);
+			const status = await getPollinationsStatus();
 
-				const dismissed = localStorage.getItem("pollinationsPromptDismissed");
+			console.log("Pollinations status:", status);
 
-				if (!status.connected && (status.expired || !dismissed)) {
-					setShowPollinationsModal(true);
-				}
-			} catch (error) {
-				console.error("Pollinations status check failed:", error);
+			const dismissed = localStorage.getItem(
+				"pollinationsPromptDismissed"
+			);
+
+			console.log("Dismissed:", dismissed);
+
+			if (!status.connected && (status.expired || !dismissed)) {
+				console.log("SHOWING POLLINATIONS MODAL");
+
+				setShowPollinationsModal(true);
+			} else {
+				console.log("NOT SHOWING MODAL");
 			}
-		};
+		} catch (error) {
+			console.error("Pollinations status check failed:", error);
+		}
+	};
 
-		checkPollinations();
-	}, []);
+	checkPollinations();
+}, []);
+
+		
 	return (
 		<main className="relative min-h-screen overflow-hidden bg-[#fbebd7] ">
 			<BackgroundDecor />

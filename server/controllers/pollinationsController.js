@@ -68,21 +68,29 @@ export const generateImages = async (req, res) => {
 			images,
 		});
 	} catch (error) {
+		
+		console.error("Generate images error:", error);
+
 		if (error.code === "POLLINATIONS_EXPIRED") {
-		user.pollinations = {
-			accessToken: null,
-			expiresAt: null,
-		};
+			user.pollinations = {
+				accessToken: null,
+				expiresAt: null,
+			};
 
-		await user.save();
+			await user.save();
 
-		return res.status(403).json({
-			code: "POLLINATIONS_EXPIRED",
+			return res.status(403).json({
+				code: "POLLINATIONS_EXPIRED",
+				message:
+					"Your Pollinations connection is no longer valid. Please reconnect.",
+			});
+		}
+
+		return res.status(503).json({
+			code: "GENERATION_UNAVAILABLE",
 			message:
-				"Your Pollinations connection is no longer valid. Please reconnect.",
+				"Image generation is temporarily unavailable. Please try again in a moment.",
 		});
-	}
-	throw error
 	}
 };
 
