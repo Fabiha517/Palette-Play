@@ -171,7 +171,7 @@ export const pollinationsCallback = async (req, res) => {
 		};
 		await user.save();
 
-		res.redirect(`${process.env.FRONTEND_URL}/?pollinations=connected`);
+		res.redirect(`${process.env.FRONTEND_URL}/home?pollinations=connected`);
 	} catch (error) {
 		console.error("Pollinations callback error:", error);
 

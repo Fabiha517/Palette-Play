@@ -38,7 +38,7 @@ export const router = createBrowserRouter([
 				children: [
 				
 					{
-						path:"/home",	
+						path:"home",	
 						element: <Home />,
 					},
 					{
@@ -58,7 +58,7 @@ export const router = createBrowserRouter([
 						element: <Results />,
 					},
 					{
-						path: "/project-details/:id",
+						path: "project-details/:id",
 						element: <ProjectDetails />,
 					},
 				
