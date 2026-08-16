@@ -22,7 +22,7 @@ export const generateImages = async (req, res) => {
 		if (!user) {
 			return res.status(404).json({ message: "User not found" });
 		}
-		const pollinations = user.pollinations;
+		const pollinations = user.pollinations || {};
 		if (!pollinations.accessToken) {
 			return res.status(403).json({
 				code: "POLLINATIONS_AUTH_REQUIRED",
@@ -171,7 +171,10 @@ export const pollinationsCallback = async (req, res) => {
 		};
 		await user.save();
 
-		res.redirect(`${process.env.FRONTEND_URL}/home?pollinations=connected`);
+
+res.redirect(
+	`${process.env.FRONTEND_URL}/home?pollinations=connected`
+)
 	} catch (error) {
 		console.error("Pollinations callback error:", error);
 
