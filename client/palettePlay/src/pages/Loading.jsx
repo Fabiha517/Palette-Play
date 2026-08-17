@@ -1,4 +1,4 @@
-import { useEffect, useState,useRef } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import purpleSplash from "../assets/images/purpleSplash.png";
 import blueSplash from "../assets/images/blueSplash.png";
@@ -6,7 +6,7 @@ import splash from "../assets/images/splash.png";
 import leftLeaf from "../assets/images/leftLeaf.png";
 import rightLeaf from "../assets/images/rightLeaf.png";
 import useProjectStore from "../store/useProjectStore";
-import SplashEffect from "../components/SplashEffect"
+import SplashEffect from "../components/SplashEffect";
 import { connectPollinations } from "../../services/api";
 import {
 	createProject,
@@ -17,24 +17,22 @@ import {
 export const Loading = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
-const generationStarted = useRef(false);
+
 	const setCreatedProject = useProjectStore((state) => state.setCreatedProject);
 	const addNewVersion = useProjectStore((state) => state.addNewVersion);
 	const currentProject = useProjectStore((state) => state.currentProject);
 
 	const [error, setError] = useState(null);
-	
+
 	const prompt = location.state?.prompt;
 	const imageUrl = location.state?.imageUrl;
 	const regenerate = location.state?.regenerate ?? false;
 	const title = location.state?.title;
 	const projectId = location.state?.projectId;
+
 	useEffect(() => {
 		if (!prompt || !imageUrl) return;
- if (generationStarted.current) {
-        console.log(" Generation already started, skipping duplicate call");
-        return;
-    }
+
 		let cancelled = false;
 
 		const generate = async () => {
@@ -52,9 +50,9 @@ const generationStarted = useRef(false);
 				console.log("Generated images:", generatedImages);
 
 				if (regenerate) {
-					    if (!projectId) {
-        throw new Error("No project found for regeneration.");
-    }	
+					if (!projectId) {
+						throw new Error("No project found for regeneration.");
+					}
 
 					for (const generated of generatedImages) {
 						if (cancelled) return;
@@ -63,16 +61,11 @@ const generationStarted = useRef(false);
 							prompt,
 							image: generated.imageUrl,
 						};
-		
 
-						const response = await addProjectVersion(
-							projectId,
-							version,
-						);
+						const response = await addProjectVersion(projectId, version);
 
 						if (cancelled) return;
 
-					
 						addNewVersion(response.version);
 					}
 
@@ -110,8 +103,6 @@ const generationStarted = useRef(false);
 
 				if (cancelled) return;
 
-				console.log("Project created:", data.project);
-
 				// Save project in Zustand
 				setCreatedProject(data.project);
 
@@ -148,6 +139,7 @@ const generationStarted = useRef(false);
 		setCreatedProject,
 		addNewVersion,
 		title,
+		location.state,
 	]);
 
 	if (!prompt || !imageUrl) {
@@ -173,39 +165,38 @@ const generationStarted = useRef(false);
 			error.code === "POLLINATIONS_AUTH_REQUIRED" ||
 			error.code === "POLLINATIONS_EXPIRED";
 		const isExpired = error.code === "POLLINATIONS_EXPIRED";
-		const isGenerationUnavailable =
-		error.code === "GENERATION_UNAVAILABLE";
+		const isGenerationUnavailable = error.code === "GENERATION_UNAVAILABLE";
 		return (
 			<main className="relative z-10 min-h-screen bg-[#fbebd7] flex items-center justify-center overflow-hidden">
 				<div className="relative z-10 text-center px-6 max-w-lg">
 					<h1 className="text-4xl font-serif text-[#503125]">Oops!</h1>
 					<h2 className="mt-5 text-2xl font-semibold text-[#503125]">
 						{isExpired
-		? "Your Pollinations connection expired"
-		: error.code === "POLLINATIONS_AUTH_REQUIRED"
-			? "Connect your Pollinations account"
-			: isGenerationUnavailable
-				? "Image generation is temporarily unavailable"
-				: "Something went wrong"}
+							? "Your Pollinations connection expired"
+							: error.code === "POLLINATIONS_AUTH_REQUIRED"
+								? "Connect your Pollinations account"
+								: isGenerationUnavailable
+									? "Image generation is temporarily unavailable"
+									: "Something went wrong"}
 					</h2>
 					<p className="mt-4 text-lg leading-8 text-[#6D5C52]">
-					{isExpired
-		? "Your Pollinations authorization has expired. Reconnect your account to continue generating images with your own Pollen."
-		: error.code === "POLLINATIONS_AUTH_REQUIRED"
-			? "Connect your Pollinations account to generate images using your own Pollen."
-			: isGenerationUnavailable
-				? "The image generation service is temporarily unavailable. Please try again in a moment."
-				: error.message}
+						{isExpired
+							? "Your Pollinations authorization has expired. Reconnect your account to continue generating images with your own Pollen."
+							: error.code === "POLLINATIONS_AUTH_REQUIRED"
+								? "Connect your Pollinations account to generate images using your own Pollen."
+								: isGenerationUnavailable
+									? "The image generation service is temporarily unavailable. Please try again in a moment."
+									: error.message}
 					</p>
 					{isPollinationsAuthError && (
 						<button
 							onClick={async () => {
 								try {
-													const data = await connectPollinations();
-													window.location.href = data.authorizationUrl;
-												} catch (error) {
-													console.error("Pollinations connection failed:", error);
-												}
+									const data = await connectPollinations();
+									window.location.href = data.authorizationUrl;
+								} catch (error) {
+									console.error("Pollinations connection failed:", error);
+								}
 							}}
 							className="mt-7 px-8 py-4 rounded-2xl text-white font-semibold bg-linear-to-r from-[#D96A57] to-[#7C6AE8] hover:scale-[1.02] transition">
 							Connect Pollinations
@@ -218,13 +209,12 @@ const generationStarted = useRef(false);
 						Back Home
 					</button>
 				</div>
-				<SplashEffect/>
+				<SplashEffect />
 			</main>
 		);
 	}
 	return (
 		<main className="relative h-screen bg-[#fbebd7] z-10 overflow-hidden">
-	
 			<div className="max-w-6xl mx-auto h-full px-6 py-6 flex flex-col">
 				{/* Header */}
 				<div className="shrink-0">

@@ -152,8 +152,8 @@ export const generateImages = async (prompt, referenceImageUrl) => {
 
 	if (!response.ok) {
 		const error = new Error(data.message || "Image generation failed");
-	error.code = data.code;
-	throw error;
+		error.code = data.code;
+		throw error;
 	}
 
 	return data;
@@ -161,6 +161,7 @@ export const generateImages = async (prompt, referenceImageUrl) => {
 
 export const addProjectVersion = async (projectId, version) => {
 	const token = localStorage.getItem("token");
+
 	const response = await fetch(`${API_URL}/projects/${projectId}/versions`, {
 		method: "POST",
 		headers: {
@@ -171,16 +172,14 @@ export const addProjectVersion = async (projectId, version) => {
 	});
 	const data = await response.json();
 
-  if (!response.ok) {
-        const error = new Error(
-            data.message || "Failed to add version"
-        );
+	if (!response.ok) {
+		const error = new Error(data.message || "Failed to add version");
 
-        error.code = data.code;
-        error.status = response.status;
+		error.code = data.code;
+		error.status = response.status;
 
-        throw error;
-    }
+		throw error;
+	}
 
 	return data;
 };
@@ -222,7 +221,7 @@ export const forgotPassword = async (email) => {
 export const resetPassword = async (token, password) => {
 	const url = `${API_URL}/users/reset-password/${token}`;
 
-	console.log("RESET URL:", url);
+
 
 	const response = await fetch(url, {
 		method: "POST",
@@ -234,9 +233,7 @@ export const resetPassword = async (token, password) => {
 		}),
 	});
 
-	console.log("STATUS:", response.status);
-	console.log("CONTENT TYPE:", response.headers.get("content-type"));
-
+	
 	const text = await response.text();
 
 	console.log("RESPONSE:", text);
@@ -265,26 +262,22 @@ export const connectPollinations = async () => {
 	});
 	const data = await response.json();
 	if (!response.ok) {
-		
 		throw new Error(data.message || "Failed to connect Pollinations");
-	
 	}
 	return data;
 };
-export const getPollinationsStatus=async()=>{
-		const token=localStorage.getItem("token")
-		const response=await fetch(`${API_URL}/ai/status`,{
-			method:"GET",
-			headers:{
-				Authorization: `Bearer ${token}`,
-			}
-		})
-		const data=await response.json()
+export const getPollinationsStatus = async () => {
+	const token = localStorage.getItem("token");
+	const response = await fetch(`${API_URL}/ai/status`, {
+		method: "GET",
+		headers: {
+			Authorization: `Bearer ${token}`,
+		},
+	});
+	const data = await response.json();
 
 	if (!response.ok) {
-		throw new Error(
-			data.message || "Failed to get Pollinations status",
-		);
+		throw new Error(data.message || "Failed to get Pollinations status");
 	}
-	return data
-}
+	return data;
+};
