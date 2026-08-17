@@ -8,7 +8,7 @@ import splash from "../assets/images/splash.png";
 import { useState, useEffect } from "react";
 import PollinationsConnectModal from "../components/PollinationsConnectModal";
 import { getPollinationsStatus } from "../../services/api";
-import useProjectStore from "../store/useProjectStore"
+import useProjectStore from "../store/useProjectStore";
 const Home = () => {
 	const [image, setImage] = useState(null);
 	const [prompt, setPrompt] = useState("");
@@ -18,27 +18,21 @@ const Home = () => {
 	const [title, setTitle] = useState("");
 	const [pollinationsStatus, setPollinationsStatus] = useState(null);
 	const [showPollinationsModal, setShowPollinationsModal] = useState(false);
+	const [showPollinationsSuccess, setShowPollinationsSuccess] = useState(false);
 
 	useEffect(() => {
 	const checkPollinations = async () => {
 		try {
-			
 			const status = await getPollinationsStatus();
 
-		
+			setPollinationsStatus(status);
 
 			const dismissed = localStorage.getItem(
 				"pollinationsPromptDismissed"
 			);
 
-	
-
 			if (!status.connected && (status.expired || !dismissed)) {
-			
-
 				setShowPollinationsModal(true);
-			} else {
-				console.log("NOT SHOWING MODAL");
 			}
 		} catch (error) {
 			console.error("Pollinations status check failed:", error);
@@ -46,9 +40,30 @@ const Home = () => {
 	};
 
 	checkPollinations();
+
+	const params = new URLSearchParams(window.location.search);
+
+	if (params.get("pollinations") === "connected") {
+		window.history.replaceState(
+			{},
+			"",
+			window.location.pathname
+		);
+
+		const timer = setTimeout(() => {
+			setShowPollinationsSuccess(true);
+
+			setTimeout(() => {
+				setShowPollinationsSuccess(false);
+			}, 4000);
+		}, 0);
+
+		return () => clearTimeout(timer);
+	}
 }, []);
-const currentProject=useProjectStore((state)=>state.currentProject)
-		
+
+	const currentProject = useProjectStore((state) => state.currentProject);
+
 	return (
 		<main className="relative min-h-screen overflow-hidden bg-[#fbebd7] ">
 			<BackgroundDecor />
@@ -95,6 +110,23 @@ const currentProject=useProjectStore((state)=>state.currentProject)
 						setShowPollinationsModal(false);
 					}}
 				/>
+			)}
+			{showPollinationsSuccess && (
+				<div className="fixed top-6 right-6 z-50 w-[360px] rounded-2xl border border-[#E8D8C7] bg-[#FFF8F1] p-5 shadow-xl">
+					<div className="flex items-start gap-3">
+						<div className="text-2xl">✓</div>
+
+						<div>
+							<h3 className="font-semibold text-[#503125]">
+								Pollinations connected!
+							</h3>
+
+							<p className="mt-1 text-sm leading-6 text-[#6D5C52]">
+								You're all set to generate images using your own Pollen.
+							</p>
+						</div>
+					</div>
+				</div>
 			)}
 		</main>
 	);
