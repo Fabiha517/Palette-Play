@@ -14,31 +14,34 @@ import { createBrowserRouter } from "react-router-dom";
 
 export const router = createBrowserRouter([
 	{
+		path: "/",
+		element: <Dashboard />,
+	},
+
+	{
 		path: "login",
 		element: <Login />,
 	},
+
 	{
 		path: "signup",
 		element: <SignUp />,
 	},
-		{
-						path: "reset-password/:token",
-						element: <ResetPassword />,
-					},
+
+	{
+		path: "reset-password/:token",
+		element: <ResetPassword />,
+	},
+
 	{
 		path: "/",
 		element: <ProtectedRoute />,
 		children: [
-				{
-						index: true,
-						element: <Dashboard />,
-					},
 			{
 				element: <App />,
 				children: [
-				
 					{
-						path:"home",	
+						path: "home",
 						element: <Home />,
 					},
 					{
@@ -61,7 +64,6 @@ export const router = createBrowserRouter([
 						path: "project-details/:id",
 						element: <ProjectDetails />,
 					},
-				
 				],
 			},
 		],
